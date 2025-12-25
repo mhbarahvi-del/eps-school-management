@@ -15,7 +15,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+  const API_URL = process.env.REACT_APP_API_URL || 'http://https://eps-school-management.vercel.app/api:5000';
 
   // Fetch all students
   const fetchStudents = async () => {
