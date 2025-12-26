@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { X, Upload, Save, User, Users, Phone, Calendar, Home, FileText, Package } from 'lucide-react';
 
 const API_URL = 'https://eps-school-management.vercel.app';
@@ -58,7 +58,7 @@ function StudentRegister({ onBack }) {
     });
   };
 
-const handleChange = async (e) => {
+const handleChange = useCallback(async (e) => {
   const { name, value, files } = e.target;
   
   if (files && files[0]) {
@@ -70,17 +70,15 @@ const handleChange = async (e) => {
       console.error(error);
     }
   } else {
-    if (name === 'dob') {
-      setFormData(prev => ({ 
-        ...prev, 
-        [name]: value,
-        dobWords: convertDateToWords(value)
-      }));
-    } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
-    }
+    setFormData(prev => {
+      const updated = { ...prev, [name]: value };
+      if (name === 'dob') {
+        updated.dobWords = convertDateToWords(value);
+      }
+      return updated;
+    });
   }
-};
+}, []);
 
   const handleSubmit = async () => {
     if (!formData.studentName || !formData.class || !formData.fatherName || !formData.fatherContact1) {
