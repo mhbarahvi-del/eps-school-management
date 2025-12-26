@@ -58,27 +58,29 @@ function StudentRegister({ onBack }) {
     });
   };
 
-  const handleChange = async (e) => {
-    const { name, value, files } = e.target;
-    
-    if (files && files[0]) {
-      try {
-        const base64 = await convertToBase64(files[0]);
-        setFormData(prev => ({ ...prev, [name]: base64 }));
-      } catch (error) {
-        alert('Error uploading file');
-        console.error(error);
-      }
-    } else {
-      let newData = { ...formData, [name]: value };
-      
-      if (name === 'dob') {
-        newData.dobWords = convertDateToWords(value);
-      }
-      
-      setFormData(newData);
+const handleChange = async (e) => {
+  const { name, value, files } = e.target;
+  
+  if (files && files[0]) {
+    try {
+      const base64 = await convertToBase64(files[0]);
+      setFormData(prev => ({ ...prev, [name]: base64 }));
+    } catch (error) {
+      alert('Error uploading file');
+      console.error(error);
     }
-  };
+  } else {
+    if (name === 'dob') {
+      setFormData(prev => ({ 
+        ...prev, 
+        [name]: value,
+        dobWords: convertDateToWords(value)
+      }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+  }
+};
 
   const handleSubmit = async () => {
     if (!formData.studentName || !formData.class || !formData.fatherName || !formData.fatherContact1) {
